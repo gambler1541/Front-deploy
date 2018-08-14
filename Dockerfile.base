@@ -3,9 +3,18 @@ FROM        python:3.6.5-slim
 
 RUN         apt-get -y update
 RUN         apt-get -y dist-upgrade
-RUN         apt-get -y install nginx supervisor
 
-COPY        ./requirements.txt   /srv/requirements.txt
+RUN         apt-get -y install curl gnupg
+RUN         curl -sL https://deb.nodesource.com/setup_8.x | bash -
+
+RUN         apt-get -y install nginx supervisor nodejs
+
+# Backend 및 Frontend의 패키지들을 미리 install
+COPY        ./requirements.txt           /srv/requirements.txt
+COPY        ./front/package.json         /srv/package.json
+COPY        ./front/package-lock.json    /srv/package-lock.json
 
 # pipenv lock --requirements > requirements.txt 으로 생성
 RUN         pip install -r /srv/requirements.txt
+WORKDIR     /srv/
+RUN         npm install
