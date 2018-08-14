@@ -2,6 +2,7 @@
 /.secrets
 /.static
 /.media
+/.config
 ### Django ###
 *.log
 *.pot
